@@ -18,10 +18,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const RecipeList = (props) => {
-  console.log(props);
-  const { recipes = [], onAddRecipe = null } = props;
-
+function RecipeList({ recipes, onAddRecipe }) {
   const recipesList = recipes.map(
     recipe => (
       <li key={recipe.name}>
@@ -62,11 +59,16 @@ const RecipeList = (props) => {
       <InputRecipe />
     </div>
   );
+}
+
+RecipeList.defaultProps = {
+  recipes: [],
+  onAddRecipe: null,
 };
 
-RecipeList.protoTypes = {
-  recipes: PropTypes.array,
-  fetchRecipes: PropTypes.func,
+RecipeList.propTypes = {
+  recipes: PropTypes.arrayOf,
+  onAddRecipe: PropTypes.func,
 };
 
 const RecipeListConnected = connect(
