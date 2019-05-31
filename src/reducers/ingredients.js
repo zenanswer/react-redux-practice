@@ -1,21 +1,26 @@
-import { ADD_INGREDIENT, SET_INGREDIENTS } from '../constants/actionTypes';
+import { handleActions } from 'redux-actions';
 
-const ingredientsReducer = (ingredients = [], action) => {
-  switch (action.type) {
-    case ADD_INGREDIENT: {
-      const newIngredient = {
-        name: action.name,
-        recipe: action.recipe,
-        quantity: action.quantity,
-      };
-      return ingredients.concat(newIngredient);
-    }
-    case SET_INGREDIENTS:
-      return action.ingredients;
+import { addIngredient, setIngredients } from '../actions/ingredients';
 
-    default:
-      return ingredients;
-  }
-};
+const ingredientsReducer = handleActions(
+  new Map([
+    [
+      addIngredient,
+      (state, action) => {
+        const newIngredient = {
+          name: action.name,
+          recipe: action.recipe,
+          quantity: action.quantity,
+        };
+        return state.concat(newIngredient);
+      },
+    ],
+    [
+      setIngredients,
+      (_, action) => (action.payload),
+    ],
+  ]),
+  [], // default state
+);
 
 export default ingredientsReducer;

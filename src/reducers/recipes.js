@@ -1,17 +1,23 @@
-import { ADD_RECIPE, SET_RECIPES } from '../constants/actionTypes';
+import { handleActions } from 'redux-actions';
 
-const recipesReducer = (recipes = [], action) => {
-  console.log(action);
-  switch (action.type) {
-    case ADD_RECIPE:
-      return recipes.concat({ name: action.payload });
+import { addRecipe, setRecipes } from '../actions/recipes';
 
-    case SET_RECIPES:
-      return action.payload;
+const handleAddRecipe = (state, action) => (state.concat({ name: action.payload }));
 
-    default:
-      return recipes;
-  }
-};
+const handleSetRecipes = (_, action) => (action.payload);
+
+const recipesReducer = handleActions(
+  new Map([
+    [
+      addRecipe,
+      handleAddRecipe,
+    ],
+    [
+      setRecipes,
+      handleSetRecipes,
+    ],
+  ]),
+  [], // default state
+);
 
 export default recipesReducer;
