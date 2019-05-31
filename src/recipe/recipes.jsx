@@ -67,7 +67,7 @@ RecipeList.defaultProps = {
 };
 
 RecipeList.propTypes = {
-  recipes: PropTypes.arrayOf,
+  recipes: PropTypes.arrayOf(PropTypes.object),
   onAddRecipe: PropTypes.func,
 };
 
