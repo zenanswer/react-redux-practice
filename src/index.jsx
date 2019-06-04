@@ -4,6 +4,7 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom';
 import './index.css';
 import App from './App';
 import ReduxDemo from './reduxdemo';
+import AsyncActionDemo from './asyncactiondemo';
 import * as serviceWorker from './serviceWorker';
 
 function Header() {
@@ -15,6 +16,9 @@ function Header() {
       <li>
         <Link to="/reduxdemo">Recipes Demo</Link>
       </li>
+      <li>
+        <Link to="/asyncaction">Async Action Demo</Link>
+      </li>
     </ul>
   );
 }
@@ -25,6 +29,7 @@ ReactDOM.render(
       <Header />
       <Route exact path="/" component={App} />
       <Route path="/reduxdemo" component={ReduxDemo} />
+      <Route path="/asyncaction" component={AsyncActionDemo} />
     </div>
   </Router>,
   document.getElementById('root'),

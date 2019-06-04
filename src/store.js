@@ -5,10 +5,11 @@ import rootReducer from './reducers/root';
 import logMiddleware from './middleware/log';
 import { apiMiddleware } from './middleware/api';
 import measureMiddleware from './middleware/measure';
+import searchMiddleware from './middleware/asyncaction';
 
 const store = createStore(
   rootReducer,
-  applyMiddleware(logMiddleware, apiMiddleware, thunk, measureMiddleware),
+  applyMiddleware(logMiddleware, apiMiddleware, thunk, measureMiddleware, searchMiddleware),
 );
 
 window.store = store;
