@@ -1,3 +1,6 @@
+
+import { compose } from 'redux';
+
 // “Redux middleware takes a different approach and gives us the next() function.
 // Calling it with an action will cause it to propagate down the middleware chain,
 // calling the root reducer and updating the state of the store.
@@ -15,18 +18,18 @@ export default measureMiddleware;
 
 // Demo for Middleware funcation chain
 
-const midA = ({ pA, pB }) => next => (action) => {
-  console.log(`midA:${pA}, ${pB}`);
-  console.time(`midA:${pA}, ${pB}`);
+const midA = () => next => (action) => {
+  console.log(`midA:${action}`);
+  console.time(`midA:${action}`);
   next(action);
-  console.timeEnd(`midA:${pA}, ${pB}`);
+  console.timeEnd(`midA:${action}`);
 };
 
-const midB = ({ pA, pB }) => next => (action) => {
-  console.log(`midB:${pA}, ${pB}`);
-  console.time(`midB:${pA}, ${pB}`);
+const midB = () => next => (action) => {
+  console.log(`midB:${action}`);
+  console.time(`midB:${action}`);
   next(action);
-  console.timeEnd(`midB:${pA}, ${pB}`);
+  console.timeEnd(`midB:${action}`);
 };
 
 function handle(action) {
@@ -34,10 +37,7 @@ function handle(action) {
 }
 
 const test01 = () => {
-  const midA2 = midA({ pA: 'Mid-1', pB: 'Mid-2' });
-  const midB2 = midB({ pA: 'Mid-1', pB: 'Mid-2' });
-
-  const handleEx = midA2(midB2(handle));
+  const handleEx = midA()(midB()(handle));
 
   handleEx('ACTION');
 };
@@ -45,11 +45,18 @@ const test01 = () => {
 test01();
 
 const test02 = () => {
-  const mids = [midA, midB].map(mid => mid({ pA: 'Mid=1', pB: 'Mid=2' }));
-  const handleEx = mids.concat(handle).flat().reduceRight(
+  const handleEx = [handle, midB(), midA()].flat().reduce(
     (accumulator, currentValue) => currentValue(accumulator),
   );
   handleEx('ACTION 2');
 };
 
 test02();
+
+const fn1 = x => x + 1;
+const fn2 = x => x + 2;
+const fn3 = x => x + 3;
+
+const fnEx1 = (...args) => fn3(fn2(fn1(...args)));
+const fnEx = compose(fn1, fn2, fn3);
+console.log(fnEx1(1), fnEx(1));
